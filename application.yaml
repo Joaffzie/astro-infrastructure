@@ -8,12 +8,11 @@ spec:
   source:
     repoURL: https://github.com/Joaffzie/astro-infrastructure.git
     targetRevision: HEAD
+    path: astro-app
   destination:
     server: https://kubernetes.default.svc
     namespace: astro-app
   syncPolicy:
-    syncOptions:
-    - CreateNamespace=true
     automated:
-      selfHeal: true
-      prune: true  
+      selfHeal: false
+      prune: false  

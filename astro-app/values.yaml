@@ -8,7 +8,7 @@ astroappdp:
   name: astro-app
   namespace: astro-app
   containers:
-    image: eu.gcr.io/astro-app-332210/astro-app:latest
+    image: docker pull eu.gcr.io/astro-app-332210/astro-app:1.0.0
     containerPort: 5000
 
 astroappsvc:
