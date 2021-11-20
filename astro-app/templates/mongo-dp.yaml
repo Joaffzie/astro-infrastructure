@@ -33,9 +33,9 @@ spec:
             cpu: "500m"
         ports:
         - containerPort: {{ .Values.mongodp.ports.containerPort }}
-        volumeMounts:
-          - mountPath: /bitnami/mongodb
-            name: mongo-pvc
+        # volumeMounts:
+        #   - mountPath: /bitnami/mongodb
+        #     name: mongo-pvc
         env:
           - name: MONGODB_ROOT_PASSWORD
             valueFrom:
@@ -47,7 +47,7 @@ spec:
               secretKeyRef:
                 name: mongo-secret
                 key: db
-      volumes:
-        - name: mongo-pvc
-          persistentVolumeClaim:
-            claimName: mongo-pvc
+      # volumes:
+      #   - name: mongo-pvc
+      #     persistentVolumeClaim:
+      #       claimName: mongo-pvc

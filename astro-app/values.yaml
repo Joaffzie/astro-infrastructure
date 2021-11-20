@@ -8,7 +8,7 @@ astroappdp:
   name: astro-app
   namespace: astro-app
   containers:
-    image: docker pull eu.gcr.io/astro-app-332210/astro-app:1.0.0
+    image: eu.gcr.io/astro-app-332210/astro-app:1.0.0
     containerPort: 5000
 
 astroappsvc:
@@ -30,7 +30,7 @@ mongosvc:
 mongodp:
   name: mongo
   namespace: astro-app
-  image: bitnami/mongodb:3
+  image: bitnami/mongodb
   ports:
     containerPort: 27017
 
