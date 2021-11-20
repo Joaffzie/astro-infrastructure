@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mongopvc.name }}
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+spec:
+  resources:
+    requests:
+      storage: {{ .Values.mongopvc.request.storage }}
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce

@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "-5"
+data:
+  nginx.conf: |
+    events {}
+    http {
+    #   include mime.types;
+      server {
+        listen 80 default_server;
+        root /usr/share/nginx/html/; 
+      
+        location / {
+          try_files $uri $uri/ @backend;
+        }
+
+        location @backend {
+          proxy_pass         http://astro-app;
+          proxy_redirect     off;
+
+          proxy_set_header   Host             $host;
+          proxy_set_header   X-Real-IP        $remote_addr;
+          proxy_set_header  X-Forwarded-For  $proxy_add_x_forwarded_for;
+        }
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-static
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"
+            />
+            <title>Document</title>
+        </head>
+        <body>
+            <div
+                style="
+                    height: 100px;
+                    width: 100%;
+                    background-color: lightgrey;
+                    display: flex;
+                    justify-content: center;
+                "
+            >
+                <h1 style="font-size: 50px">Astrology</h1>
+            </div>
+            <div style="display: flex; justify-content: center">
+                <div style="display: flex; flex-direction: column">
+                    <p>
+                        Enter a name and a month and check your astrology!
+                    </p>
+                    <form id="form" action="">
+                        <div
+                            style="
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: center;
+                            "
+                        >
+                            <label for="name">Name</label>
+                            <input id="name" type="text" />
+                            <label for="month">Month</label>
+                            <input id="month" type="text" />
+                            <button
+                                type="submit"
+                                style="
+                                    width: 50px;
+                                    flex-direction: row-reverse;
+                                "
+                            >
+                                Enter
+                            </button>
+                <p id='astro-text'> hello </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <script>
+                let form = document.querySelector('#form');
+          // console.log(form);
+                form.addEventListener('submit', function (event) {
+            let fName = document.getElementById('name').value;
+            console.log(fName);
+            let astro = document.querySelector('#astro-text');
+            fetch('http://localhost/month')
+            .then(response => response.json())
+            .then(data => console.log(data));
+            event.preventDefault()
+                });
+            </script>
+        </body>
+    </html>
+

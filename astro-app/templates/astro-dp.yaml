@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.astroappsvc.name }}
+spec:
+  selector:
+    app: {{ .Values.astroappdp.name }}
+  ports:
+  - port: {{ .Values.astroappsvc.spec.ports.port }}
+    targetPort: {{ .Values.astroappsvc.spec.ports.targetPort }}
+  type: {{ .Values.astroappsvc.spec.type }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.astroappdp.name }}
+  namespace: {{ .Values.astroappdp.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.astroappdp.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.astroappdp.name }}
+    spec:
+      containers:
+      - name: {{ .Values.astroappdp.name }}
+        image: {{ .Values.astroappdp.containers.image }}        
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: {{ .Values.astroappdp.containers.containerPort }}
